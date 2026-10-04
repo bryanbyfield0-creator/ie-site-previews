@@ -35,7 +35,7 @@
     this.areaWords = (cfg.areas || []).map(function (a) { return norm(a).trim(); });
   }
   Engine.prototype.phoneLine = function () { var c = this.c; return c.phone ? "call or text " + c.phone : (c.email ? "email " + c.email : "use the contact page"); };
-  Engine.prototype.hoursText = function (date) {
+  Engine.prototype.hoursText = function (date, q) {
     var c = this.c, h = c.hours;
     if (!h) return c.hoursNote || ("Hours aren't posted online. The quickest way to get a time is a quote request, or " + this.phoneLine() + ".");
     var n = nowPT(date), today = h[n.day], open = today && n.hour >= today[0] && n.hour < today[1];
@@ -43,8 +43,11 @@
     for (i = 1; i <= 7; i++) { var d = i % 7, v = h[d], key = v ? v.join("-") : "x", last = groups[groups.length - 1];
       if (last && last.key === key) last.end = d; else groups.push({ key: key, start: d, end: d, v: v }); }
     groups.forEach(function (g) { var nm = DAYS[g.start].slice(0, 3) + (g.end !== g.start ? "–" + DAYS[g.end].slice(0, 3) : "");
-      lines.push(nm + ": " + (g.v ? fmtH(g.v[0]) + "–" + fmtH(g.v[1]) : "Closed")); });
-    var st = open ? "We're open right now (until " + fmtH(today[1]) + ")." : "We're closed right now.";
+      lines.push(nm + ": " + (g.v ? fmtH(g.v[0]) + "–" + fmtH(g.v[1]) : ((c.dayNotes && c.dayNotes[g.start] && g.start === g.end) ? c.dayNotes[g.start] : "Closed"))); });
+    var st = open ? "We're open right now (until " + fmtH(today[1]) + ")." : "We're closed right now.", ask = -1;
+    if (q) { DAYS.forEach(function (dn, i) { if (q.indexOf(" " + dn.toLowerCase()) !== -1 || q.indexOf(" " + dn.toLowerCase().slice(0, 3) + " ") !== -1) ask = i; });
+      if (q.indexOf(" today") !== -1) ask = n.day; if (q.indexOf(" tomorrow") !== -1) ask = (n.day + 1) % 7; if (q.indexOf(" weekend") !== -1) ask = h[6] ? 6 : 0; }
+    if (ask >= 0) st = (h[ask] ? "Yes, on " + DAYS[ask] + " we're open " + fmtH(h[ask][0]) + "–" + fmtH(h[ask][1]) + "." : ((c.dayNotes && c.dayNotes[ask]) ? DAYS[ask] + ": " + c.dayNotes[ask] + "." : "Sorry, we're closed on " + DAYS[ask] + "s.")) + (ask === n.day ? (open ? " (We're open right now.)" : "") : "");
     return st + "\n" + lines.join("\n") + (c.hoursNote ? "\n" + c.hoursNote : "");
   };
   Engine.prototype.mainChips = function () { return ["Services", "Areas served", "Hours", "Get a free quote"]; };
@@ -100,7 +103,7 @@
     switch (top) {
       case "services": return R("Here's what " + c.short + " does:\n" + this.svc.map(function (s) { return "• " + s.name + (s.desc ? " — " + s.desc : ""); }).join("\n") + "\nAsk about any of these, or get a free quote.", ["Get a free quote", "Areas served", "Hours"]);
       case "areas": return R("We're based in " + c.city + " and serve " + c.areaText + "." + (c.areaNote ? " " + c.areaNote : "") + " Tell me your city and I'll check.", ["Get a free quote", "Services", "Hours"]);
-      case "hours": return R(this.hoursText(), ["Get a free quote", "Contact", "Services"]);
+      case "hours": return R(this.hoursText(null, t), ["Get a free quote", "Contact", "Services"]);
       case "contact": if (c.contactNote) return R(c.contactNote, ["Get a free quote", "Hours"], { contact: true }); return R("You can " + this.phoneLine() + (c.phone && c.email ? ", or email " + c.email : "") + ". Or leave your details here and we'll reach out.", ["Get a free quote", "Hours"], { contact: true });
       case "pay": return R(c.payNote || "Payment options are confirmed with your quote. Want me to start one?", ["Get a free quote", "Contact"]);
       case "ins": return R(c.insNote || ("Great question. Ask about licensing and insurance when we confirm your quote, or " + this.phoneLine() + "."), ["Get a free quote", "Contact"]);
