@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bid Finder</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header id="hdr">
+  <img id="logo" alt="" hidden>
+  <div>
+    <h1 id="bname">Bid Finder</h1>
+    <div id="tagline"></div>
+  </div>
+  <nav class="brands">Demo brandings:
+    <a href="?brand=default">Default</a> ·
+    <a href="?brand=summit">Summit (consultant)</a> ·
+    <a href="?brand=harbor">Harbor (association)</a>
+  </nav>
+</header>
+<main>
+<section id="profile" class="card">
+  <h2>1. Your business profile</h2>
+  <div class="presets">Try a sample:
+    <button type="button" data-p="fac">Facilities support 561210 · Inland Empire</button>
+    <button type="button" data-p="jan">Janitorial 561720 · California</button>
+  </div>
+  <div class="grid">
+    <label>Company name<input id="company" placeholder="Your Company LLC"></label>
+    <label>Reply-to email (for quote drafts)<input id="email" placeholder="you@company.com"></label>
+    <label>NAICS codes (comma separated)<input id="naics" placeholder="561210, 561720"></label>
+    <label>Keywords (what you do/sell)<input id="keywords" placeholder="janitorial, custodial, grounds"></label>
+    <label>States you work in<input id="states" placeholder="CA, NV"></label>
+    <label>Your ZIP<input id="zip" placeholder="92401" maxlength="5"></label>
+  </div>
+  <fieldset>
+    <legend>Set-aside eligibility (check all you qualify for)</legend>
+    <label><input type="checkbox" data-e="sb"> Small business</label>
+    <label><input type="checkbox" data-e="8a"> 8(a)</label>
+    <label><input type="checkbox" data-e="hubzone"> HUBZone</label>
+    <label><input type="checkbox" data-e="sdvosb"> Service-disabled veteran</label>
+    <label><input type="checkbox" data-e="vosb"> Veteran-owned</label>
+    <label><input type="checkbox" data-e="wosb"> Women-owned</label>
+    <label><input type="checkbox" data-e="edwosb"> EDWOSB</label>
+    <label><input type="checkbox" id="nationwide"> Also show bids nationwide (no penalty for other states)</label>
+  </fieldset>
+  <button id="go" class="primary" type="button">Find my bids</button>
+  <span id="meta"></span>
+</section>
+<section id="results" class="card">
+  <h2>2. Ranked bids</h2>
+  <div id="list"><p class="muted">Fill in your profile and click “Find my bids”.</p></div>
+</section>
+<section id="detail" class="card" hidden></section>
+</main>
+<footer>
+  Source: SAM.gov public data. Not affiliated with GSA.
+  Open bids in the public data do not include dollar values.
+  Always verify the notice on SAM.gov before bidding.
+  <br><span id="fbrand"></span> · Contact:
+  <a id="femail" href="mailto:bryanbyfield0@gmail.com">bryanbyfield0@gmail.com</a>
+</footer>
+<script src="score.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

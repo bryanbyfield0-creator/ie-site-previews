@@ -1,0 +1,8 @@
+{
+ "default":{"name":"Bid Finder","by":"Precision Facility Solutions LLC","logo":"","primary":"#1f4e79","accent":"#f2a900","email":"bryanbyfield0@gmail.com",
+   "tagline":"Government bids you can actually win, ranked in plain English."},
+ "summit":{"name":"Summit GovCon Advisors","by":"Powered by Bid Finder","logo":"logos/summit.svg","primary":"#0b6e4f","accent":"#e4572e","email":"bryanbyfield0@gmail.com",
+   "tagline":"Your weekly shortlist of winnable federal bids. (Example partner branding)"},
+ "harbor":{"name":"Harbor Small Business Network","by":"Powered by Bid Finder","logo":"logos/harbor.svg","primary":"#5b2a86","accent":"#00a6a6","email":"bryanbyfield0@gmail.com",
+   "tagline":"A member benefit: federal bids matched to your business. (Example partner branding)"}
+}
